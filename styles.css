@@ -2239,13 +2239,11 @@ p {
     .why-us-subtitle {
         max-width: 100%;
     }
-    .why-us-stats {
-        max-width: 100%;
-    }
     /* Mobile order: header → cards → stats */
-    .why-us-header { order: 1; }
-    .why-us-right  { order: 2; }
-    .why-us-left   { order: 3; }
+    .why-us-header { order: 1; width: 100%; }
+    .why-us-right  { order: 2; width: 100%; }
+    .why-us-left   { order: 3; width: 100%; }
+    .why-us-stats  { width: 100%; max-width: 100%; margin-top: 0; }
 }
 
 @media (max-width: 480px) {
