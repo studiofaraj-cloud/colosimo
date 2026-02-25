@@ -3941,10 +3941,14 @@ p {
 
 /* Header */
 .contact-section-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     margin-bottom: var(--space-2xl);
     position: relative;
     z-index: 1;
+    gap: var(--space-sm);
 }
 
 .contact-section-header .section-label {
@@ -3963,7 +3967,7 @@ p {
     color: var(--color-navy);
     letter-spacing: -0.02em;
     line-height: 1.15;
-    margin: 0 0 var(--space-sm);
+    margin: 0;
 }
 
 .contact-section-sub {
