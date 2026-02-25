@@ -1,0 +1,6 @@
+# robots.txt — COLOSIMO PEINTURE
+User-agent: *
+Allow: /
+Disallow: /assets/images/favicon/
+
+Sitemap: https://colosimo.ch/sitemap.xml
