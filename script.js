@@ -375,6 +375,7 @@ const translations = {
             hours_times: "7:30 - 18:00",
             zone_label: "Zone",
             open_badge: "Ouvert",
+            closed_badge: "Fermé",
             cta_heading: "Devis gratuit en 48h",
             cta_sub: "Sans engagement · Visite sur place · Réponse rapide",
             or_quote: "Ou demander un devis direct"
@@ -886,6 +887,7 @@ const translations = {
             hours_times: "7:30 - 18:00",
             zone_label: "Zone",
             open_badge: "Geöffnet",
+            closed_badge: "Geschlossen",
             cta_heading: "Kostenloses Angebot in 48h",
             cta_sub: "Unverbindlich · Vor-Ort-Besuch · Schnelle Antwort",
             or_quote: "Oder direkt ein Angebot anfordern"
@@ -1421,6 +1423,7 @@ const translations = {
             hours_times: "7:30 - 18:00",
             zone_label: "Zona",
             open_badge: "Aperto",
+            closed_badge: "Chiuso",
             cta_heading: "Preventivo gratuito in 48h",
             cta_sub: "Senza impegno · Visita in loco · Risposta rapida",
             or_quote: "O richiedere un preventivo diretto"
@@ -1955,6 +1958,7 @@ const translations = {
             hours_times: "7:30 - 18:00",
             zone_label: "Zone",
             open_badge: "Open",
+            closed_badge: "Closed",
             cta_heading: "Free quote within 48h",
             cta_sub: "No commitment · On-site visit · Fast response",
             or_quote: "Or request a direct quote"
@@ -4392,3 +4396,57 @@ function initWhatsAppButton() {
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', initWhatsAppButton);
+// === OPENING HOURS BADGE ===
+// Mon–Fri 07:30–18:00 Swiss local time (Europe/Zurich)
+(function () {
+    function isOpen() {
+        // Use Swiss timezone
+        const now = new Date();
+        const zurich = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Europe/Zurich',
+            hour: 'numeric',
+            minute: 'numeric',
+            weekday: 'short',
+            hour12: false
+        }).formatToParts(now);
+
+        const parts = {};
+        zurich.forEach(p => { parts[p.type] = p.value; });
+
+        const weekday = parts.weekday; // 'Mon'–'Sun'
+        const hour    = parseInt(parts.hour,   10);
+        const minute  = parseInt(parts.minute, 10);
+
+        const isWeekday = !['Sat', 'Sun'].includes(weekday);
+        const totalMins = hour * 60 + minute;
+        const openMins  = 7  * 60 + 30;  // 07:30
+        const closeMins = 18 * 60;        // 18:00
+
+        return isWeekday && totalMins >= openMins && totalMins < closeMins;
+    }
+
+    function updateBadge() {
+        const badge = document.getElementById('hours-badge');
+        if (!badge) return;
+
+        const lang   = window.currentLang || 'fr';
+        const t      = window.translations && window.translations[lang]
+                        && window.translations[lang].contact;
+        const open   = isOpen();
+
+        badge.textContent = open
+            ? (t && t.open_badge   || 'Ouvert')
+            : (t && t.closed_badge || 'Fermé');
+
+        badge.classList.toggle('is-closed', !open);
+    }
+
+    // Run on load and every minute
+    document.addEventListener('DOMContentLoaded', function () {
+        updateBadge();
+        setInterval(updateBadge, 60 * 1000);
+    });
+
+    // Re-run when language changes so the text updates too
+    window.addEventListener('languageChanged', updateBadge);
+}());
