@@ -135,7 +135,7 @@ const translations = {
             onu_name: "Nations Unies — Genève",
             onu_desc: "Rénovation de la Salle des Assemblées",
             tpg_name: "TPG — Transports Publics Genevois",
-            tpg_desc: "Décoration créative du Métro de Genève"
+            tpg_desc: "Décoration créative du Tram de Genève"
         },
         testimonials: {
             label: "Témoignages",
